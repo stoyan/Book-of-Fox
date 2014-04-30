@@ -1,0 +1,281 @@
+html, body, .title, .bio h3 {margin:0;padding:0;}
+body {
+  color: #433f3e; 
+  font: 16px Helvetica, Arial, sans-serif;
+}
+a {color: #093F78;}
+a:hover, .footlinks a:hover{
+  color: #83a1ab; 
+  text-decoration: none;
+}
+h1, h2 {
+  font-size: 32px;
+  letter-spacing: -1px;
+  margin-bottom: 66px;
+}
+h3 {font-size: 28px;}
+h4 {font-size: 24px; color: #093F78;}
+h5 {font-size: 20px; margin: 3px 0;}
+code {
+  border: 1px solid #83a1ab;
+  padding: 0 0.2em;
+  background: #eef0f0;
+}
+pre {
+  padding: 10px;
+  background: #eef0f0;
+  width: 760px;
+  overflow-y: hidden;
+}
+img {
+  border: 0;
+  max-width: 780px;
+}
+.row {overflow: hidden;}
+.boat {float: left;}
+.ship {float: right;}
+.content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 960px;
+}
+.pad {
+  margin: 0 50px 50px;
+}
+.text {
+  padding-left: 22px;
+  border-left: 34px #f2f2f2 solid;
+  line-height: 24px;
+}
+.text p {margin-bottom: 30px;}
+.chapter-title {
+  background: #093F78;
+  text-transform: uppercase;
+  color: white;
+  font-size: 28px;
+  padding: 10px 10px 4px 50px;
+  display: inline;
+  margin-right: 15px;
+  position: relative;
+}
+.chapter-title i {
+  font-size: 20px;
+  position: relative;
+  top: -2px;
+  left: 5px;
+}
+.caption {
+  font-size: 14px;
+}
+.sidebar {
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  background: #f2f2f2;
+}
+.sidebar p {
+  margin-bottom: 0;
+}
+.header {
+  padding-top: 35px;
+  padding-left: 10px;
+}
+.footer {
+  background: #093F78;
+  color: white;
+  padding: 20px 50px;
+}
+.foo {
+  padding-right: 80px; 
+  font-weight: bold;
+}
+
+.bio {
+  width: 400px;
+  font-size: 12px;
+}
+.bio h3 {
+  color: #433F3E;
+  font-size: 16px;
+}
+.profile {
+  padding-right: 20px;
+}
+.subtitle, .author {
+  color: #aeaeae; 
+  font-weight: bold;
+  font-size: 19px;
+  padding-left: 7px;
+  margin: 10px 0;
+}
+.author {
+  padding-right: 165px;
+  text-align: right;
+  text-transform: uppercase;
+  margin: 0;
+}
+.title {
+  color: #093F78;
+  font-size: 90px;
+  font-weight: bold;
+  letter-spacing: -4px;
+  text-transform: uppercase;
+  display: block;
+  text-decoration: none;
+}
+.title img {
+  position: relative;
+  top: 7px;
+}
+a.title:hover {color: #093F78;}
+a:hover img {
+  opacity: 0.8;  
+}
+.gently {
+  margin: 20px 50px 40px;
+}
+.footlinks {
+  list-style: none;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: normal;
+  padding: 0;
+  letter-spacing: 0.3px;
+}
+.footlinks a, .prevnext a {
+  color: white;
+  text-decoration: none;
+}
+.toc {
+  list-style: none;
+  padding: 0;
+}
+.nav {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.nav li {
+  list-style: none;
+  display: inline;
+}
+.nav ul {
+  padding: 5px 0 0;
+  margin: 0;
+}
+.paging {
+  text-align: center;
+  font-size: 22px;
+  width: 400px;
+}
+.paging a {
+  color: #444;
+  text-decoration: none;
+  padding: 5px;
+}
+.paging a:hover, a.current {
+  background: #093F78;
+  padding: 5px;
+  color: white;
+}
+.prevnext {
+  border-radius: 7px;
+  background: #093F78;
+  font-size: 20px;
+  padding: 6px 7px 3px;
+  width: 210px;
+  text-align: center;
+}
+.begone {
+  visibility: hidden;
+}
+.menu {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  background: white;
+  border: 1px solid #093F78;
+}
+.menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.menu a {
+  text-decoration: none;
+  font-size: 20px;
+  display: block;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+.menu a:hover {
+  background: #efefef;
+  color: #093F78;
+}
+.chapter-title:hover .menu,
+.menu:hover {
+  display: block;
+}
+
+.icon {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+/* hiliteme.com  */
+.hl-default {
+    color: Black;
+}
+.hl-code {
+    color: Gray;
+}
+.hl-brackets {
+    color: Olive;
+}
+.hl-comment {
+    color: Orange;
+}
+.hl-quotes {
+    color: Darkred;
+}
+.hl-string {
+    color: Red;
+}
+.hl-identifier {
+    color: Blue;
+}
+.hl-builtin {
+    color: Teal;
+}
+.hl-reserved {
+    color: Green;
+}
+.hl-inlinedoc {
+    color: Blue;
+}
+.hl-var {
+    color: Darkblue;
+}
+.hl-url {
+    color: Blue;
+}
+.hl-special {
+    color: Navy;
+}
+.hl-number {
+    color: Maroon;
+}
+.hl-inlinetags {
+    color: Blue;
+}
+.hl-main { 
+    background-color: White;
+}
+.hl-gutter {
+    background-color: #999999;
+    color: White
+}
+.hl-table {
+    font-family: courier, monospace;
+    font-size: 12px;
+    border: solid 1px lightgray;
+}

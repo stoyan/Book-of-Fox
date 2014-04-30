@@ -1,0 +1,381 @@
+<h1>Hacking Gaia</h1>
+    
+<div>
+  <div class="sect1">
+    <div class="sectionbody">
+      <div class="paragraph">
+        <p>
+          One of the most appealing features of Firefox OS to a web developer is that the whole UI of the phone is web technologies - HTML, CSS, JavaScript. This means you can modify any part of the UI. You can truly make the phone your own. Or if you're running a website/webapp, you can offer a customized Firefox OS build to your users with much deeper integration of your offering directly in the OS. For example, if you're running a photo hosting service, you can synchronize the built-in gallery app on the phone with your service. Or offer geo check-ins directly from double-tapping the lockscreen. The opportunities are limitless.
+        </p>
+      </div>
+      <div class="paragraph">
+        <p>
+          This chapter walks you through setting up your copy of Gaia (the phone UI), modifying it and pushing the changes to the device.
+        </p>
+      </div>
+      <div class="sect2">
+        <h3 id="_prerequisites">
+          Prerequisites
+        </h3>
+        <div class="paragraph">
+          <p>
+            Install B2G Desktop from <a href="http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/">http://ftp.mozilla.org/pub/mozilla.org/b2g/nightly/latest-mozilla-central/</a> (e.g. b2g-23.0a1.multi.mac64.dmg)
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Run to test:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+~/Codez/B2G.app/Contents/MacOS/b2g-bin
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Checkout and make gaia
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+cd ~/Codez
+git clone git://github.com/mozilla-b2g/gaia.git gaia
+cd gaia
+DEBUG=1 make
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Run
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+~/Codez/B2G.app/Contents/MacOS/b2g-bin -profile ~/Codez/gaia/profile
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Run with JS console on:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+~/Codez/B2G.app/Contents/MacOS/b2g-bin -profile ~/Codez/gaia/profile -jsconsole
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Run and open a specific app:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+~/Codez/B2G.app/Contents/MacOS/b2g-bin -profile ~/Codez/gaia/profile -jsconsole --runapp browser
+</pre>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_a_new_gaia_app">
+          A new Gaia app
+        </h3>
+        <div class="paragraph">
+          <p>
+            Meaning make FFApp a part of Gaia
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+cd ~/Codez/gaia
+mkdir -p ~/Codez/gaia/_mine/ffapp
+cp -r ~/Codez/ffapp/ ~/Codez/gaia/_mine/ffapp
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Edit <code>Makefile</code> and add <code>_mine</code> as in <code>GAIA_APP_SRCDIRS?=apps _mine</code>
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+DEBUG=1 make
+~/Codez/B2G.app/Contents/MacOS/b2g-bin -profile ~/Codez/gaia/profile -jsconsole --runapp ffapp
+</pre>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_b2g_desktop_keys">
+            B2G Desktop keys
+          </h4>
+          <div class="paragraph">
+            <p>
+              To navigate in the Desktop B2G which doesn't have a home or power buttons
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              Power button:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+fn + right arrow
+fn + right arrow hold (sleep menu)
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Home button:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+fn + left arrow
+fn + left arrow hold (browse open apps)
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_flashing_the_phone">
+          Flashing the phone
+        </h3>
+        <div class="sect3">
+          <h4 id="_prerequisites_2">
+            Prerequisites
+          </h4>
+          <div class="paragraph">
+            <p>
+              Install ADT bundle from <a href="http://developer.android.com/sdk/index.html">http://developer.android.com/sdk/index.html</a>
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+mv ~/Downloads/adt-bundle-mac-x86_64-20130219 ~/Codez/adt
+export PATH=~/Codez/adt/sdk/platform-tools:$PATH
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Phone in Development mode (Settings, Device information, More Information, Developer)
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              You should see this:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+$ adb devices
+List of devices attached
+full_unagi    device
+</pre>
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_flash_with_your_code">
+            Flash with your code
+          </h4>
+          <div class="listingblock">
+            <div >
+              <pre>
+make reset-gaia
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Phone in Dev mode again (after each reset)
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              Later:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+make install-gaia
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Flash a single app:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+BUILD_APP_NAME=ffapp make install-gaia
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_hacking_gaia_2">
+          Hacking Gaia
+        </h3>
+        <div class="paragraph">
+          <p>
+            Same as above, only in <code>~/Codez/gaia/apps</code>
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            <code>gaia/apps/system</code> is where it's at. Then:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div >
+            <pre>
+BUILD_APP_NAME=system make install-gaia
+</pre>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_sample_hack">
+            Sample hack
+          </h4>
+          <div class="paragraph">
+            <p>
+              Let's add a floating icon on top of the whole phone's UI which moves left or right whenever you touch it.
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+cd ~/Codez/gaia
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Edit <code>apps/system/index.html</code>
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              Shove this anywhere, e.g. after <code>&lt;div id="os-logo"...</code>
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+&lt;div id="myhack" class="myhack-left" style="z-index: 40000;"&gt;&lt;/div&gt;
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              (There's a whole z-index file, but this is a hack)
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+touch apps/system/js/myhack.js
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              With this content:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+(function() {
+  var myhack = document.getElementById('myhack');
+  myhack.onclick = function () {
+    console.log('click');
+    myhack.classList.toggle('myhack-right');
+    myhack.classList.toggle('myhack-left');
+  };
+})();
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              css
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+touch apps/system/style/myhack/myhack.css
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              with
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+#myhack {
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 5rem;
+  top: 10rem;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  background: url(/style/myhack/myhack.png) center no-repeat;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: left 0.2s ease-out;
+}
+.myhack-left {
+  left: -1rem;
+}
+.myhack-right {
+  left: calc(100% - 4rem);
+}
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Watch the little icon dance to the left and to the right onclick.
+            </p>
+          </div>
+          <div class="listingblock">
+            <div >
+              <pre>
+screenshot goeth here
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

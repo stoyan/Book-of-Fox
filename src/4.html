@@ -1,0 +1,253 @@
+<h1>Debugging</h1>
+
+<div>
+  <div class="sect1">
+    <div class="sectionbody">
+      <div class="sect2">
+        <h3 id="_logging">Logging</h3>
+        <div class="paragraph">
+          <p>
+            As a web developer, you're probably accustomed to having access to the <code>console</code> object and its family of methods, such as <code>console.log('omg!');</code>. The good news is that you can use the same logging mechanism in your mobile apps too. Let's see how. While trying this out, you can also practice changing code and running the app to see the difference.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Update your <code>update()</code> function with a call to <code>console.log()</code> so it looks like:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+function update() {
+  console.log('battery level', batt.level);
+  var text = 'Your battery level is ' + Math.round(batt.level * 100) + '%';
+  document.getElementById('batt').textContent = text;
+}
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Go to the R2D2B2G extension tab in your desktop Firefox and click the "Update" button found in your "Battery" app row in the dashboard.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            This is the closest to a good old page refresh you're used to from web development. Your app is updated and relaunched in the simulator. Now find and bring up the console window, so you can see a message that says something like "battery level 0.78".
+          </p>
+        </div>
+        <div class="imageblock" id="4_consolelog">
+          <div>
+            <img src="images/4_consolelog.png" alt="images/4_consolelog.png" width="600px" />
+          </div>
+          <div class="_title">
+            Figure 1. Message logged in the console
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            If you don't see the console window, chances are you didn't start the simulator with the console enabled. To fix this, close the Simulator window first (alternatively you can stop the simulator by clicking the "Running" toggle in the R2D2B2G extension). Then make sure the "Console" checkbox on the left-hand side is checked. Now start the simulator again either by clicking "Stopped" toggle, or "Update" or "Run" buttons in your app.
+          </p>
+        </div>
+        <div class="imageblock" id="4_toggle_option">
+          <div>
+            <img src="images/4_toggle_option.png" alt="images/4_toggle_option.png" width="331px" />
+          </div>
+          <div class="_title">
+            Figure 2. Console option
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_device_logging">
+            Device logging
+          </h4>
+          <div class="paragraph">
+            <p>
+              How about using console.log() when testing on the device. Good news, it's possible. Once you've setup your copy of <code>adb</code> you can see the logs from the device using:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+$ adb logcat
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              This will show you an overwhelming list of a lot of things happening on the device. But you can <code>grep</code> and filter only down to specific messages that interest you. Setting up an alias makes your life easier, like so:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+alias lolcat='adb logcat | grep "JavaScript Error\|Content JS"'
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              This command will show you the output of your <code>console.log()</code> calls as well as any JavaScript errors.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_debugging_2">
+          Debugging
+        </h3>
+        <div class="paragraph">
+          <p>
+            Logging in the console is helpful to dump some intermediate information and see what's going on in your application, but quickly reaches its limitations as a debugging tool. Luckily you can do proper debugging while developing your app.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            When you run the simulator, you can notice an additional <em>Connect…</em> button that appears under the <em>Stopped/Running</em> toggle.
+          </p>
+        </div>
+        <div class="imageblock" id="4_connect_button">
+          <div>
+            <img src="images/4_connect_button.png" alt="images/4_connect_button.png" />
+          </div>
+          <div class="_title">
+            Figure 3. Connecting to a remote device or simulator
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Following the button you get another screen that allows you to connect to a remote device.
+          </p>
+        </div>
+        <div class="imageblock" id="4_connect">
+          <div>
+            <img src="images/4_connect.png" alt="images/4_connect.png" />
+          </div>
+          <div class="_title">
+            Figure 4. Connect to a remote device: host and port
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            This means you can connect to a phone and debug the code running on the device. But the same feature allows you to connect to the simulator. The host and port for the connection are conveniently pre-filled you you.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            On the next screen, you click the first link under "Available remote tabs" heading.
+          </p>
+        </div>
+        <div class="imageblock" id="4_tabs">
+          <div>
+            <img src="images/4_tabs.png" alt="images/4_tabs.png" />
+          </div>
+          <div class="_title">
+            Figure 5. Remote tabs
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Lo and behold - more developer tools including a console, a profiler and a debugger. Try the "Debugger" tab. You get a list of all the script evaluated on the device. This means you can also look into and debug the system code that's powering the phone. There's nothing scary in the term "system code", it's all JavaScript anyway and the whole UI of the phone is nothing but a web page.
+          </p>
+        </div>
+        <div class="imageblock" id="4_home">
+          <div>
+            <img src="images/4_home.png" alt="images/4_home.png" />
+          </div>
+          <div class="_title">
+            Figure 6. Peeking into the homescreen's code
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            In the debugger you can put breakpoints, step through the code and so on. Let's give it a try.
+          </p>
+        </div>
+        <div class="sect3">
+          <h4 id="_debugging_the_battery_app">
+            Debugging the battery app
+          </h4>
+          <div class="paragraph">
+            <p>
+              Let's invoke the debugger from within the <code>update()</code> function of the app.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              Replace the <code>console.log();</code> call with a <code>debugger;</code> statement, like so:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+function update() {
+  debugger;
+  var text = 'Your battery level is ' + Math.round(batt.level * 100) + '%';
+  document.getElementById('batt').textContent = text;
+}
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Next, click the "Update" button next to the app to get the latest code. Then, close the debugger window and restart it by connecting again and clicking the Debugger tab.
+            </p>
+          </div>
+          <div class="admonitionblock">
+            <table>
+              <tr>
+                <td class="icon">
+                  <div class="_title">
+                    Note
+                  </div>
+                </td>
+                <td>
+                  <div class="paragraph">
+                    <p>
+                      You don't have to close and reopen the simulator, but you need to close and reopen the debugger to see your latest changes.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="paragraph">
+            <p>
+              Now that you have both the simulator and the debugger open, your code should pause execution whenever it enters the <code>update()</code> function. Since you don't want to wait for the battery level change event, you can click "Update" again to "refresh" the app.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              You should see something like this:
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              ((image_debugger; paused]]
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              Click the "Step In (F8)" twice so the execution moves past the <code>var text = ...</code> line. You can see the value of the <code>text</code> variable on the right hand side getting updated to something like "Your battery level is 72%".
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              ((image_Your battery level is 72%]]
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              Feel free to experiment, for example click the value of the <code>text</code> variable and change it to "potatoes". Then click the blue "play" button to continue code execution.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              ((image_hello battery potatoes]]
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

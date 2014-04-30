@@ -1,0 +1,659 @@
+<h1>Build your own Firefox OS</h1>
+
+<div>
+  <div class="sect1">
+    <div class="sectionbody">
+      <div class="paragraph">
+        <p>
+          Firefox OS is open source so you can build it yourself. In fact, at the time of writing it's really hard to get access to a phone with preinstalled OS so you might have to do it even if you're not especially ecstatic about it.
+        </p>
+      </div>
+      <div class="paragraph">
+        <p>
+          You can build the OS and install it on many phones that support Android 4. In this chapter you'll see a walk-through building for two phones - Nexus S 4G and Galaxy Nexus.
+        </p>
+      </div>
+      <div class="sect2">
+        <h3 id="_support_tiers">
+          Support tiers
+        </h3>
+        <div class="paragraph">
+          <p>
+            The Firefox OS prerequisites page (<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Firefox_OS_build_prerequisites">https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Firefox_OS_build_prerequisites</a>) list a number of supported phones grouped into tiers. Tier 1 is the most supported one with phones such as Keon, Unagi, Inagi and so on, which are the hardest to find.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Tier 2 includes Nexus S and Nexus S 4g by Samsung. Tier 2 means not everything is actively tested. If you can get hold of one of these phones, that would be preferable to tier 3. Tier 3 is Galaxy S2 and Galaxy Nexus. These phones have on-screen home button which is not supported by Firefox OS. This means that, unfortunately you can't close an app once it's open. However toward the end of the chapter you'll see a hack that helps with this problem.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            This chapter walks you through building and installing on one Tier 2 phone and one Tier 3.
+          </p>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_your_development_os">
+          Your development OS
+        </h3>
+        <div class="paragraph">
+          <p>
+            You can develop apps and hack on Gaia using any type of computer OS for your development. However for building the Firefox OS it's highly recommended that you use Linux and more specifically Ubuntu 12.04. (Theoretically you can build on a Mac as well, but be aware that the author has spent a significant hours failing to do so.)
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            The good news is that Ubuntu is free. It's Linux-based free operating system and the recommended 12.04 is the latest of the stable 12 branch which is guaranteed to be supported until 2017.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            If you're already running this OS, great news. If you're not, it's best if you find a Windows machine and install Ubuntu on it, either replacing Windows or together with it.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            In this chapter let's assume you've never seen Ubuntu before. If you have, feel free to skip the more trivial parts.
+          </p>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_install_ubuntu">
+          Install Ubuntu
+        </h3>
+        <div class="paragraph">
+          <p>
+            The process is simple - download the OS, burn it to a CD and install it - but each of these steps can take a while.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Start by visiting <a href="http://www.ubuntu.com/download/desktop">http://www.ubuntu.com/download/desktop</a>. What you need to download is Ubuntu 12.04, 64-bit.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Burn the ISO image file you downloaded to a CD. On a Mac use the built-in "Disk Utility". Windows also has a built-in "Disc Image Burner" program.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Put the CD in the disk player of the machine that you'll use for building Firefox OS and start the computer.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Follow the instructions to install Ubuntu 12.04.
+          </p>
+        </div>
+        <div class="imageblock" id="x_dashhome">
+          <div>
+            <img src="images/x_dashhome.png" alt="images/x_dashhome.png">
+          </div>
+          <div class="_title">
+            Figure 1. Your new Ubuntu desktop
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Most of the work you'll do is on the console, so why not make it handy. Click "Dash Home" on the upper left corner, type "Terminal" in the search box.
+          </p>
+        </div>
+        <div class="imageblock" id="x_search">
+          <div>
+            <img src="images/x_search.png" alt="images/x_search.png">
+          </div>
+          <div class="_title">
+            Figure 2. Find the Terminal application
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            CLick the terminal icon. The console appears and also an icon on the left hand side. Right click the icon and select "Lock to Launcher" so the app it's always handy.
+          </p>
+        </div>
+        <div class="imageblock" id="x_lock">
+          <div>
+            <img src="images/x_lock.png" alt="images/x_lock.png">
+          </div>
+          <div class="_title">
+            Figure 3. Lock the Terminal app
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_setup_pre_requisites">
+          Setup pre-requisites
+        </h3>
+        <div class="paragraph">
+          <p>
+            Now that you have a new shiny Ubuntu machine, it's time to install the tools that the Firefox OS needs.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Firefox_OS_build_prerequisites">https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Firefox_OS_build_prerequisites</a> lists the tools and libraries you need in order to build Firefox OS. You start with:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+sudo apt-get install autoconf2.13 bison bzip2 ccache curl flex gawk 
+gcc g++ g++-multilib git ia32-libs lib32ncurses5-dev lib32z1-dev 
+libgl1-mesa-dev libx11-dev make zip
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            However not all of the tools may install successfully, so you'll need to follow error messages
+            that descibe missing dependencies and specify desired versions of those packages.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Finally, run:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ ccache --max-size 3GB
+</pre>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_install_java">
+            Install Java
+          </h4>
+          <div class="listingblock">
+            <div>
+              <pre>
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java7-installer
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              check:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+java -version
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_install_adb">
+          Install adb
+        </h3>
+        <div class="paragraph">
+          <p>
+            <a href="http://developer.android.com/sdk/index.html">http://developer.android.com/sdk/index.html</a>
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Download ADT bundle
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            It will open in the Archive Manager UI which you use to unzip the package to, say ~/Downloads
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Rename and move the folder so it's easier to type
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+mv ~/Do....
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Now you can run the ADB utility like:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ ~/adt/sdk/platform-tools/adb
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            You can make it more convenient by typing:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ PATH=~/adt/sdk/platform-tools:$PATH
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Now try:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ adb devices
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            You'll get an empty list of devices. Now you need to make sure your device shows up in this list.
+          </p>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_connecting_to_the_nexus_s_4g">
+          Connecting to the Nexus S 4G
+        </h3>
+        <div class="paragraph">
+          <p>
+            On the phone find the <em>Settings</em> app, scroll all the way down, go <em>Developer options</em> and tap the ON/OFF toggle at the top. Say OK to the scary warning.
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+[[[[image]]]]
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Enable USB debugging too.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            On the Linux machine you need to setup a udev rule. First you create a new file using the <code>nano</code> (or <code>vi</code>) text utility:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ nano /etc/udev/rules.d/android.rules
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Paste this line:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0666", GROUP="plugdev"
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            CTRL+X to save the file. Then set the permissions:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ sudo chmod a+r /etc/udev/rules.d/android.rules
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Finally, test that it all worked out:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ adb devices
+</pre>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_fetching_and_building_b2g">
+          Fetching and building B2G
+        </h3>
+        <div class="paragraph">
+          <p>
+            Get the code from github:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+cd ~/
+git clone git://github.com/mozilla-b2g/B2G.git
+cd B2G
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Configure the code for the Nexus S 4G phone.
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ ./config.sh nexus-s-4g
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            If you're building for a different phone, you can see the list of supported devices with:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ ./config.sh
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Now take a break, this is a long process that downloads and sets up a lot of code and utilities (several GBs worth).
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Next step is to run the build using:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ ./build.sh
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Finally copy all the code on the phone and replace the Android with Firefox OS:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ ./flash.sh
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            You'll get a message if you agree to "Unlock bootloader?". Say <em>Yes</em> by pressing the Volume button up and then Power button to continue.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Give it a little bit of time and soon enough you'll be greeted with the setup screen.
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+[[[image]]]
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Note that because of the different screen resolution everything may look smaller. This appears to be a CSS media query issue related to "retina" display and will be solved eventually. But that's why this phone is considered Tier 2 when it comes to supporting the latest builds. At least now you have your own device running Firefox OS and you can start playing with it.
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+[[[image]]]
+</pre>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_building_and_installing_on_galaxy_nexus">
+          Building and installing on Galaxy Nexus
+        </h3>
+        <div class="paragraph">
+          <p>
+            Another phone you can use to experiment is Samsung Galaxy Nexus. It's a Tier 3 device, meaning it may behave worse than The Nexus S. But you can still use it to test the real OS on a real device.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Indeed, Galaxy Nexus doesn't have a working hardware Home button which makes testing really difficult, as you can only open a single app and cannot close it. However, there's a workaround including you hacking the Gaia UI. You'll see how in a moment. Let's get started flashing the Galaxy Nexus.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Start by connecting the device with the USB cable. Setup the developer options as described above. Run <code>adb devices</code> to make sure you have access to the phone.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Configure, build, flash:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ cd ~/B2G
+$ ./config.sh galaxy-nexus
+$ ./build.sh
+$ ./flash.sh
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            And voila! You now have a Firefox OS running on Galaxy Nexus.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            The absence of a working Home button prevents from taking a screenshot, so a picture will have to do. As you can see the icons are even smaller of the bigger screen.
+          </p>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_hacking_on_gaia">
+          Hacking on Gaia
+        </h3>
+        <div class="paragraph">
+          <p>
+            After you're done building and flashing, you can see that you already have a copy of Gaia inside your B2G directory, e.g.
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ ls ~/B2G/gaia/apps/browser
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            You can edit the files in the <code>gaia</code> directory and flash only the Gaia part to the phone. Let's give it a quick try by changing a simple text.
+          </p>
+        </div>
+        <div class="olist arabic">
+          <ol class="arabic">
+            <li>
+              <p>
+                Click Home Folder icon on your Ubuntu desktop
+              </p>
+            </li>
+            <li>
+              <p>
+                Navigate to folder B2G/gaia/apps/browser/locales
+              </p>
+            </li>
+            <li>
+              <p>
+                Double-click the file <code>browser.en-US.properties</code> which contains the English texts
+              </p>
+            </li>
+            <li>
+              <p>
+                Change something, for example the text for the property called <code>enter-search-or-address.placeholder</code>
+              </p>
+            </li>
+            <li>
+              <p>
+                Go back to the Terminal, make sure the phone is connected and type
+              </p>
+            </li>
+          </ol>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ cd ~/B2G
+$ ./flash.sh gaia
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            This only copies the Gaia part of the OS, not the whole thing. You'll see some messages flying by and then your phone will restart. Then you can see the effect of your changes:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+[[[browser]]]
+</pre>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_and_only_gaia">
+            And only Gaia
+          </h4>
+          <div class="paragraph">
+            <p>
+              At this point you're done with building the Firefox OS (B2G) and installing it on an Android phone. From now on you can use this phone for regular application testing (with the B2G2R2D2 extension) or Gaia hacking.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              For Gaia hacking, you can review the previous chapter. You can go back to your regular development environment (assuming you installed Ubuntu just for building the OS and your regular development is on a different machine)
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              If you want to copy your modified version of Gaia you no longer need to use <code>flash.sh</code>, you can navigate to your Gaia directory and run <code>make install-gaia</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_closing_apps_on_galaxy_nexus">
+          Closing apps on Galaxy Nexus
+        </h3>
+        <div class="paragraph">
+          <p>
+            As you've already seen while playing on Galaxy Nexus, you can't close apps because the Home button doesn't work. Here's a little hack you can use to add the ability to close apps from the sleep menu.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            The sleep menu appears when you press and hold the power button. Let's add another option in this menu. Let's assume you're still on the Ubuntu desktop you used to build B2G. Note however that all you need is Gaia.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            First, choose Home Folder on the desktop and navigate to B2G/gaia/apps/system. Find the file <code>sleep_menu.js</code> and double click. It opens in the built-in text editor.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Find the function <code>generateItems()</code>. Before it returns, you need to add another item to the <code>items</code> array:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+items.push({label: 'home', value: 'goHome'});
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            This adds the new menu item. Now you need to handle clicks (taps) on this menu option. Find the function <code>handler()</code>. It's one big <code>switch</code> statement. Add another case at the end of that <code>switch</code> statement.
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+case 'goHome':
+  var current_app = WindowManager.getDisplayedApp();
+  if (current_app) {
+    WindowManager.kill(current_app);
+  }
+  break;
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Save the file and push the changes to the phone:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+$ cd ~/B2G/gaia
+$ make install-gaia
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            The result when you start an app and then press and hold the Power button:
+          </p>
+        </div>
+        <div class="listingblock">
+          <div>
+            <pre>
+[[[screenshto]]]
+</pre>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p>
+            Tap "home" and the application closes.
+          </p>
+        </div>
+        <div class="paragraph">
+          <p>
+            Now you've significantly improved your Firefox OS testing experience on Galaxy Nexus.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

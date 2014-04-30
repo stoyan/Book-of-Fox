@@ -1,0 +1,255 @@
+<h1>Deploying your app</h1>
+
+<div>
+  <div class="sect1">
+    <div class="sectionbody">
+      <div class="paragraph">
+        <p>
+          Once you have a running app, next steps are:
+        </p>
+      </div>
+      <div class="ulist">
+        <ul>
+          <li>
+            <p>
+              experience the app on a real device
+            </p>
+          </li>
+          <li>
+            <p>
+              spread it around so other can enjoy it too
+            </p>
+          </li>
+        </ul>
+      </div>
+      <div class="sect2">
+        <h3 id="_testing_on_the_device">
+          Testing on the device
+        </h3>
+        <div class="paragraph">
+          <p>
+            Now that you know how to write and debug an application and also test in the simulator, you're naturally eager to see it running on a real device. Good news: you can do this easily using the R2D2B2G extension. Bad news: there's some setup upfront.
+          </p>
+        </div>
+        <div class="sect3">
+          <h4 id="_adb">
+            adb
+          </h4>
+          <div class="paragraph">
+            <p>
+              You'll need to setup a command-line utility called <code>adb</code> which stands for Android Debug Bridge. You run this utility on your development machine and use it to connect to your phone, to browse the file system and copy (pull, push) files between the computer and the phone.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              R2D2B2G comes with a copy of adb so you don't have to install it separately. However you have to setup the phone and the computer to "talk" to each other.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              First, enable remote debugging on the phone: go to the <em>Settings</em> app, then select menu <em>Device Information</em> / <em>More Information</em> / <em>Developer</em>. Once there, check the "Remote debugging" option.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              Then you need to setup your developer machine. The setup is different depending on your operating system.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              If you're on a <em>Mac</em>, the good news is that it just works. On <em>Windows</em> you need to install drivers specific to your computer manufacturer. The details can be found here: <a href="https://developer.android.com/tools/extras/oem-usb.html">https://developer.android.com/tools/extras/oem-usb.html</a>
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              On <em>Linux</em> you need to create the file:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+/etc/udev/rules.d/51-android.rules
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              In this file add the line:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+SUBSYSTEM=="usb", ATTR{idVendor}=="05c6", MODE="0666", GROUP="plugdev"
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              The id string <code>05c6</code> is specific to the phone you have, so you may need to replace it with the one for your test phone. Here are some IDs you might find useful:
+            </p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>
+                  <code>05c6</code> - Geeksphone device made by Qualcomm
+                </p>
+              </li>
+              <li>
+                <p>
+                  <code>19d2</code> - ZTE device, the maker of several test devices, e.g. Unagi, Inagi and Otoro
+                </p>
+              </li>
+              <li>
+                <p>
+                  <code>18d1</code> - Google device
+                </p>
+              </li>
+              <li>
+                <p>
+                  <code>04e8</code> - Samsung
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div class="paragraph">
+            <p>
+              Finally, set the permissions:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+chmod a+r /etc/udev/rules.d/51-android.rules
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              If all goes as planned, when you open the R2D2B2G extension you'll see the new option to push the app to the device.
+            </p>
+          </div>
+          <div class="imageblock" id="2_devicepush">
+            <div>
+              <img src="images/2_devicepush.png" alt="images/2_devicepush.png" />
+            </div>
+            <div class="_title">
+              Figure 1. New elements in the R2D2B2G UI
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_standalone_adb">
+            Standalone adb
+          </h4>
+          <div class="paragraph">
+            <p>
+              It's great that R2D2B2G comes bundled with adb. But if you run into troubles with the setup (and you're not sure if the extension's UI is to blame) or if you want more hands-on development, it will be beneficial to install your own copy of adb.
+            </p>
+          </div>
+          <div class="paragraph">
+            <p>
+              To do so:
+            </p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>
+                  Download the "ADT bundle" zip file from <a href="http://developer.android.com/sdk/index.html">http://developer.android.com/sdk/index.html</a> (ADT stands for Android Developer Tools)
+                </p>
+              </li>
+              <li>
+                <p>
+                  Unzip to a convenient location, e.g. <code>~/Codez/adt</code>
+                </p>
+              </li>
+              <li>
+                <p>
+                  Add the path to the subdirectory <code>sdk/platform-tools</code> found in ADT to your OS PATH. This is where the adb utility is found and it's good to have it handy.
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div class="paragraph">
+            <p>
+              For example, after unzipping the ADT bundle in your <code>~/Downloads</code> folder:
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+$ mv ~/Downloads/adt-bundle-mac-x86_64-20130219 ~/Codez/adt
+$ export PATH=~/Codez/adt/sdk/platform-tools:$PATH
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              The end result you're looking for is being able to type <code>adb devices</code> from any directory and make sure it "sees" your phone.
+            </p>
+          </div>
+          <div class="listingblock">
+            <div>
+              <pre>
+$ adb devices
+List of devices attached
+full_unagi device
+</pre>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              Then, just for fun, try <code>adb shell</code> and just like that, miraculously, you can browse the files on your phone.
+            </p>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_pushing_the_app_to_the_phone">
+            Pushing the app to the phone
+          </h4>
+          <div class="paragraph">
+            <p>
+              Once the setup is behind you, things can't be any easier. Open the R2D2B2G dashboard and click the "Push" button found next to your app.
+            </p>
+          </div>
+          <div class="imageblock" id="2_pushbutton">
+            <div>
+              <img src="images/2_pushbutton.png" alt="images/2_pushbutton.png" />
+            </div>
+            <div class="_title">
+              Figure 2. Pushing to the device
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              The phone will ask you for permission to accept a remote connection. Say OK.
+            </p>
+          </div>
+          <div class="imageblock" id="2_permission">
+            <div>
+              <img src="images/2_permission.png" alt="images/2_permission.png" width="320px" />
+            </div>
+            <div class="_title">
+              Figure 3. Allow a remote connection
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>
+              And this is it. You'll see an "Battery installed" message and the app is now available on your phone.
+            </p>
+          </div>
+          <div class="imageblock" id="2_pushed">
+            <div>
+              <img src="images/2_pushed.png" alt="images/2_pushed.png" />
+            </div>
+            <div class="_title">
+              Figure 4. The app running on the device
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
